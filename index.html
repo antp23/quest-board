@@ -1,0 +1,62 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Quests"><meta name="theme-color" content="#141228">
+<link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="manifest" href="manifest.json">
+<title>Quest Board</title>
+<style>
+:root{--bg:#141228;--card:#1f1c3a;--txt:#f2efff;--mut:#9a94c4;--hot:#ff6b6b;--wk:#ffb347;--away:#6bc5ff;--ok:#4ee6a0}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:radial-gradient(circle at 20% -10%,#3a2a6a,var(--bg) 60%);color:var(--txt);font:15px -apple-system,system-ui,sans-serif;padding:env(safe-area-inset-top) 14px 40px;min-height:100vh}
+.banner{background:#ffb34722;border:1px solid #ffb34766;color:#ffd79a;font-size:12px;padding:6px 10px;border-radius:10px;margin:12px 0 6px;text-align:center}
+header{display:flex;align-items:center;gap:14px;margin:10px 0 14px}
+h1{font-size:22px;margin:0}.sub{color:var(--mut);font-size:13px}
+.ring{width:84px;height:84px;flex:none;position:relative}.ring svg{transform:rotate(-90deg)}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:18px}
+.ring circle{fill:none;stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset .8s cubic-bezier(.2,.8,.2,1)}
+.streak{font-size:13px;color:var(--ok);margin-top:4px}
+section{margin:18px 0}
+h2{font-size:16px;margin:0 0 8px;display:flex;align-items:center;gap:8px}
+h2 .pill{font-size:12px;padding:2px 8px;border-radius:99px;background:#ffffff14;color:var(--mut)}
+.task{display:flex;gap:12px;align-items:flex-start;background:var(--card);border-radius:14px;padding:12px;margin:8px 0;border-left:4px solid var(--c,#555);transition:transform .15s,opacity .4s;animation:pop .4s both}
+.task:active{transform:scale(.97)}
+.chk{width:28px;height:28px;border-radius:50%;border:2.5px solid var(--c,#888);flex:none;display:grid;place-items:center;position:relative}
+.done .chk{background:var(--ok);border-color:var(--ok)}.done .chk:after{content:"✓";color:#141228;font-weight:900}
+.done .t{text-decoration:line-through;color:var(--mut)}.done{opacity:.55}
+.t{font-weight:600}.n{color:var(--mut);font-size:13px;margin-top:2px}.due{color:var(--hot);font-size:12px;font-weight:700}
+.cats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cat{background:var(--card);border-radius:12px;padding:10px;font-size:13px}
+.bar{height:7px;background:#ffffff14;border-radius:9px;margin-top:6px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#7b6bff,var(--ok));border-radius:9px;transition:width .8s}
+details summary{cursor:pointer;color:var(--mut);margin:6px 0}
+@keyframes pop{from{opacity:0;transform:translateY(10px)}}
+.burst{position:fixed;pointer-events:none;width:8px;height:8px;border-radius:2px;z-index:9}
+.toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(100px);background:var(--ok);color:#141228;font-weight:800;padding:10px 18px;border-radius:99px;transition:transform .35s}
+.toast.s{transform:translateX(-50%)}
+</style></head><body>
+<div class="banner">Preview: your taps are saved on this phone only. They don't update the Google Sheet yet.</div>
+<header><div class="ring"><svg width="84" height="84"><circle cx="42" cy="42" r="36" stroke="#ffffff14"/><circle id="rg" cx="42" cy="42" r="36" stroke="url(#g)" stroke-dasharray="226" stroke-dashoffset="226"/><defs><linearGradient id="g"><stop offset="0" stop-color="#7b6bff"/><stop offset="1" stop-color="#4ee6a0"/></linearGradient></defs></svg><b id="pct">0%</b></div>
+<div><h1>Quest Board</h1><div class="sub" id="sum"></div><div class="streak" id="streak"></div></div></header>
+<div id="app"></div><div class="toast" id="toast"></div>
+<script>
+const KEY='quest-done-v1';let local=JSON.parse(localStorage.getItem(KEY)||'{}');let data=[];
+const P={"Today":["🔥 Today","--hot"],"This week":["📅 This week","--wk"],"When family's away":["🏠 When family's away","--away"]};
+const cheers=["Crushed it! 💪","One more down 🥋","Oss! 🙌","Momentum! 🚀","Nice work, Anthony ✨"];
+const isDone=t=>local[t.task]!==undefined?local[t.task]:/done/i.test(t.status);
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function card(t,c){const d=isDone(t);return `<div class="task ${d?'done':''}" style="--c:var(${c})" data-k="${esc(t.task)}"><div class="chk"></div><div><div class="t">${esc(t.task)}</div>${t.due_date?`<div class="due">Due ${t.due_date}</div>`:''}${t.next_step?`<div class="n">${esc(t.next_step)}</div>`:''}</div></div>`}
+function render(){const open=data.filter(t=>!/sell/i.test(t.status));const done=open.filter(isDone).length,pct=Math.round(done/open.length*100);
+document.getElementById('rg').style.strokeDashoffset=226*(1-done/open.length);document.getElementById('pct').textContent=pct+'%';
+document.getElementById('sum').textContent=`${done} of ${open.length} quests done`;
+const today=data.filter(t=>t.priority=='Today'&&!isDone(t)).length;document.getElementById('streak').textContent=today?`${today} left for today. You've got this.`:'Today is clear 🎉';
+let h='';for(const[k,[lab,c]]of Object.entries(P)){const ts=data.filter(t=>t.priority==k);const od=ts.filter(t=>!isDone(t)),dn=ts.filter(isDone);if(!ts.length)continue;
+h+=`<section><h2>${lab}<span class="pill">${dn.length}/${ts.length}</span></h2>${od.map(t=>card(t,c)).join('')}${dn.length?`<details><summary>${dn.length} done</summary>${dn.map(t=>card(t,c)).join('')}</details>`:''}</section>`}
+const cats={};open.forEach(t=>{const c=cats[t.category||'Other']??={n:0,d:0};c.n++;if(isDone(t))c.d++});
+h+=`<section><h2>🗺️ The big picture</h2><div class="cats">${Object.entries(cats).sort((a,b)=>b[1].n-a[1].n).map(([k,v])=>`<div class="cat">${esc(k)} <span style="float:right;color:var(--mut)">${v.d}/${v.n}</span><div class="bar"><i style="width:${v.d/v.n*100}%"></i></div></div>`).join('')}</div></section>`;
+const rest=data.filter(t=>!P[t.priority]&&!isDone(t));
+h+=`<section><details><summary>Everything else (${rest.length} open)</summary>${rest.map(t=>card(t,'--mut')).join('')}</details></section><div class="sub" style="text-align:center">Sheet snapshot: ${window.upd||''}</div>`;
+document.getElementById('app').innerHTML=h}
+function burst(x,y){const cols=['#ff6b6b','#ffb347','#4ee6a0','#6bc5ff','#b28bff'];for(let i=0;i<28;i++){const e=document.createElement('div');e.className='burst';e.style.background=cols[i%5];e.style.left=x+'px';e.style.top=y+'px';document.body.appendChild(e);const a=Math.random()*6.28,v=60+Math.random()*120;e.animate([{transform:'translate(0,0) rotate(0)',opacity:1},{transform:`translate(${Math.cos(a)*v}px,${Math.sin(a)*v+80}px) rotate(${Math.random()*720}deg)`,opacity:0}],{duration:900,easing:'cubic-bezier(.1,.7,.3,1)'}).onfinish=()=>e.remove()}}
+document.addEventListener('click',e=>{const el=e.target.closest('.task');if(!el)return;const t=data.find(x=>x.task==el.dataset.k);const nd=!isDone(t);local[t.task]=nd;localStorage.setItem(KEY,JSON.stringify(local));
+if(nd){const r=el.querySelector('.chk').getBoundingClientRect();burst(r.left+14,r.top+14);navigator.vibrate&&navigator.vibrate(30);const ts=document.getElementById('toast');ts.textContent=cheers[Math.random()*cheers.length|0];ts.classList.add('s');setTimeout(()=>ts.classList.remove('s'),1400);el.classList.add('done');setTimeout(render,550)}else render()});
+fetch('data.json?'+Date.now()).then(r=>r.json()).then(j=>{data=j.tasks;window.upd=j.updated;render()});
+</script></body></html>

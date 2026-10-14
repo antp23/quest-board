@@ -1,0 +1,680 @@
+{
+ "updated": "2026-10-14T00:21",
+ "tasks": [
+  {
+   "task": "Move under-desk stuff to storage",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Done",
+   "category": "Organize",
+   "priority": "",
+   "next_step": "Box it and take it to storage"
+  },
+  {
+   "task": "Mount plastic hooks in storage",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Done",
+   "category": "Organize",
+   "priority": "",
+   "next_step": ""
+  },
+  {
+   "task": "Wash the cars",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Vehicles",
+   "priority": "",
+   "next_step": "Wash them"
+  },
+  {
+   "task": "Install the truck taillight and fog light",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Vehicles",
+   "priority": "",
+   "next_step": "Install both lights"
+  },
+  {
+   "task": "Clean the truck engine bay",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Vehicles",
+   "priority": "",
+   "next_step": "Clean the engine bay"
+  },
+  {
+   "task": "Patch the truck leather",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Vehicles",
+   "priority": "",
+   "next_step": "Patch the leather"
+  },
+  {
+   "task": "Mount plastic hooks in the truck center console",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Done",
+   "category": "Vehicles",
+   "priority": "",
+   "next_step": ""
+  },
+  {
+   "task": "Prune the bonsai",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Patio and plants",
+   "priority": "",
+   "next_step": "Prune"
+  },
+  {
+   "task": "Rebuild bonsai shelves with cinders and redesign the patio",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Patio and plants",
+   "priority": "",
+   "next_step": "Sketch the cinder shelf layout then rebuild"
+  },
+  {
+   "task": "Upload a photo of each plant to the green thumb bot",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Patio and plants",
+   "priority": "",
+   "next_step": "Photograph each plant and send the photos"
+  },
+  {
+   "task": "Regrip the skateboard",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "House",
+   "priority": "Today",
+   "next_step": "Regrip it"
+  },
+  {
+   "task": "Mount the brown shelves on the master bed",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "House",
+   "priority": "When family's away",
+   "next_step": "Mount them"
+  },
+  {
+   "task": "Replace the nightstand with the tall shelf left of the bed TV",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "House",
+   "priority": "When family's away",
+   "next_step": "Swap the nightstand for that shelf"
+  },
+  {
+   "task": "Put the tall shelf next to the guest room fridge",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "House",
+   "priority": "When family's away",
+   "next_step": "Place it"
+  },
+  {
+   "task": "Buy a matching nightstand",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Shopping",
+   "priority": "",
+   "next_step": "Shop City Furniture or Rooms To Go"
+  },
+  {
+   "task": "Buy a matching bookshelf",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Shopping",
+   "priority": "",
+   "next_step": "Shop City Furniture or Rooms To Go"
+  },
+  {
+   "task": "Buy a cubby-style shelf",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Shopping",
+   "priority": "",
+   "next_step": "Shop City Furniture or Rooms To Go on the same trip"
+  },
+  {
+   "task": "Buy a RACT rifle rack",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Christmas list",
+   "priority": "",
+   "next_step": "Add it to the buy list when you are ready to order"
+  },
+  {
+   "task": "Buy the Warrior Kid books",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Christmas list",
+   "priority": "",
+   "next_step": "Add them to the buy list when you are ready to order"
+  },
+  {
+   "task": "Buy a Seestar S50 telescope",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Christmas list",
+   "priority": "",
+   "next_step": "Add it to the buy list when you are ready to order"
+  },
+  {
+   "task": "Sort the shoe rack",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Organize",
+   "priority": "",
+   "next_step": "Decide keep donate or store for each pair"
+  },
+  {
+   "task": "Mount the guest room TV in the master",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "House",
+   "priority": "When family's away",
+   "next_step": "Move it and mount it"
+  },
+  {
+   "task": "Sort out the gaming chair",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "House",
+   "priority": "",
+   "next_step": "Pick a spot or a replacement"
+  },
+  {
+   "task": "Refresh the laundry area",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "House",
+   "priority": "When family's away",
+   "next_step": "Level the machines then mount the vacuum"
+  },
+  {
+   "task": "Mount the guest room clock above the master mirror",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "House",
+   "priority": "When family's away",
+   "next_step": "Mount it"
+  },
+  {
+   "task": "Secure the master mirror to the wall",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "House",
+   "priority": "When family's away",
+   "next_step": "Anchor it"
+  },
+  {
+   "task": "Mount the cheap mirror in Rayna's room",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Kids",
+   "priority": "",
+   "next_step": "Mount it"
+  },
+  {
+   "task": "Mount the maps on wood including Rayna's",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Kids",
+   "priority": "",
+   "next_step": "Mount each map on wood"
+  },
+  {
+   "task": "Sort under the guest room bed",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Organize",
+   "priority": "",
+   "next_step": "Sort keep donate or store"
+  },
+  {
+   "task": "Evaluate other guest room bed frames",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "House",
+   "priority": "When family's away",
+   "next_step": "Compare frames and pick one"
+  },
+  {
+   "task": "Sort the keepsake trunk",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Organize",
+   "priority": "",
+   "next_step": "Sort keep vs store"
+  },
+  {
+   "task": "Move the couch to the other short wall",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "House",
+   "priority": "When family's away",
+   "next_step": "Move it"
+  },
+  {
+   "task": "Rearrange the pot and pan cabinet",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Organize",
+   "priority": "",
+   "next_step": "Reorganize it"
+  },
+  {
+   "task": "Install the Frame TV USB drive",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Waiting",
+   "category": "House",
+   "priority": "When family's away",
+   "next_step": "Load the photos onto the drive first then install it"
+  },
+  {
+   "task": "Organize the safe",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Organize",
+   "priority": "Today",
+   "next_step": "Organize it today at home"
+  },
+  {
+   "task": "Finish the dresser install",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "House",
+   "priority": "When family's away",
+   "next_step": "Finish the install this weekend"
+  },
+  {
+   "task": "Storage unit errand",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Errands",
+   "priority": "This week",
+   "next_step": "Weekday trip (closed weekends)"
+  },
+  {
+   "task": "Set up the reverse osmosis system at the office and bring it home",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Errands",
+   "priority": "When family's away",
+   "next_step": "Do it at the office trip with the lights and microgreens (office closed weekends)"
+  },
+  {
+   "task": "List the battery and pump",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "To sell",
+   "category": "Sell",
+   "priority": "",
+   "next_step": "List it online"
+  },
+  {
+   "task": "List the knee cooler",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "To sell",
+   "category": "Sell",
+   "priority": "",
+   "next_step": "List it online"
+  },
+  {
+   "task": "List the scooter",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "To sell",
+   "category": "Sell",
+   "priority": "",
+   "next_step": "List it online"
+  },
+  {
+   "task": "Clean the air purifier",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "House",
+   "priority": "When family's away",
+   "next_step": "Clean it"
+  },
+  {
+   "task": "Set up the microgreens",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Patio and plants",
+   "priority": "When family's away",
+   "next_step": "Set up the kit at the office"
+  },
+  {
+   "task": "Return the Costco stuff",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Done",
+   "category": "Errands",
+   "priority": "",
+   "next_step": "Gather the items and return them"
+  },
+  {
+   "task": "Deal with the 3-wheel stroller",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Done",
+   "category": "Kids",
+   "priority": "High",
+   "next_step": "Bought the Graco at Once Upon a Child Oct 9 ($75)"
+  },
+  {
+   "task": "Call the Toyota mechanic",
+   "owner": "Anthony",
+   "due_date": "2026-10-14",
+   "status": "Open",
+   "category": "Vehicles",
+   "priority": "Today",
+   "next_step": "VERY IMPORTANT: call Tue 10/13 to book Tundra service for when Sakshee and Rayna are out of town"
+  },
+  {
+   "task": "Clean the smoker",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "House",
+   "priority": "When family's away",
+   "next_step": "Clean it"
+  },
+  {
+   "task": "Clean Dyson",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "House",
+   "priority": "When family's away",
+   "next_step": ""
+  },
+  {
+   "task": "Confirm the Montessori school you liked",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Kids",
+   "priority": "",
+   "next_step": "Confirm it together"
+  },
+  {
+   "task": "Plan a trip to Jenny Springs",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Travel",
+   "priority": "",
+   "next_step": "Pick a date"
+  },
+  {
+   "task": "Plan a trip to Rainbow River",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Travel",
+   "priority": "",
+   "next_step": "Pick a date"
+  },
+  {
+   "task": "Fix the crooked guest bath toilet and seal",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Condo maintenance requests",
+   "priority": "",
+   "next_step": "File a condo work order"
+  },
+  {
+   "task": "Fix the building entrance door so it stops slamming",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Condo maintenance requests",
+   "priority": "",
+   "next_step": "File a condo work order"
+  },
+  {
+   "task": "Book Vegas",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Done",
+   "category": "Travel",
+   "priority": "",
+   "next_step": "Book the trip"
+  },
+  {
+   "task": "Rearrange phone apps",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Done",
+   "category": "Personal",
+   "priority": "",
+   "next_step": "Rearrange the apps"
+  },
+  {
+   "task": "Clean up the office",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Done",
+   "category": "House",
+   "priority": "",
+   "next_step": "Clean the office"
+  },
+  {
+   "task": "Mount the office lights",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "House",
+   "priority": "When family's away",
+   "next_step": "Mount the lights"
+  },
+  {
+   "task": "Capture Grok bot and Apple home ideas",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Done",
+   "category": "Personal",
+   "priority": "When family's away",
+   "next_step": "Write the ideas down"
+  },
+  {
+   "task": "Clean the guest room desk area",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Done",
+   "category": "House",
+   "priority": "",
+   "next_step": "Clean the desk area"
+  },
+  {
+   "task": "Remove the folding desk in the master bedroom",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Done",
+   "category": "House",
+   "priority": "",
+   "next_step": "Remove the desk"
+  },
+  {
+   "task": "Set up receipt printer (Mac mini + MUNBYN + phenol-free paper)",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Personal",
+   "priority": "",
+   "next_step": "Order MUNBYN ITPP905 and phenol-free paper; keep Mac mini always on for print jobs"
+  },
+  {
+   "task": "Install the new tow hitch",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Vehicles",
+   "priority": "",
+   "next_step": "Cut the old hitch off, then install the new one"
+  },
+  {
+   "task": "Clean and pressure wash the new stroller",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Kids",
+   "priority": "",
+   "next_step": "Pressure wash it"
+  },
+  {
+   "task": "Program the new recipe screen",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Done",
+   "category": "House",
+   "priority": "Today",
+   "next_step": "Set it up tonight (it's charged)"
+  },
+  {
+   "task": "Decide what to cook tomorrow",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Done",
+   "category": "House",
+   "priority": "Today",
+   "next_step": "Pick tomorrow's meal with Personal Chef"
+  },
+  {
+   "task": "Build a pantry database with Personal Chef",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Done",
+   "category": "House",
+   "priority": "Today",
+   "next_step": "Personal Chef drafts the system and workflows"
+  },
+  {
+   "task": "Plan a trip to India",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Travel",
+   "priority": "",
+   "next_step": "Use Flying Blue miles soon; with Sakshee and Rayna"
+  },
+  {
+   "task": "Set up the always-on Mac mini at home",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "House",
+   "priority": "When family's away",
+   "next_step": "Connect to Wi-Fi or Ethernet, never sleep, restart after power failure, fixed IP in router, then ping Personal Chef (also needed for the receipt printer)"
+  },
+  {
+   "task": "Sell or trade in the extra Mac mini",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "To sell",
+   "category": "Sell",
+   "priority": "",
+   "next_step": "Compare eBay vs Best Buy or Apple trade-in, then list or trade it"
+  },
+  {
+   "task": "Pressure wash the kids' playground at the apartment",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Kids",
+   "priority": "",
+   "next_step": "Do it the same day the pressure washer is out for the cars (with the stroller)"
+  },
+  {
+   "task": "Repot the albino Monstera",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Patio and plants",
+   "priority": "When family's away",
+   "next_step": "Repot it"
+  },
+  {
+   "task": "Reconfigure Rayna's Stokke chair",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Kids",
+   "priority": "",
+   "next_step": "Move the footplate up 2 levels"
+  },
+  {
+   "task": "Text the dog sitter about Zeera for next week",
+   "owner": "Anthony",
+   "due_date": "2026-10-12",
+   "status": "Done",
+   "category": "Personal",
+   "priority": "Today",
+   "next_step": "Reach out today to book the sitter for next week"
+  },
+  {
+   "task": "Grab old jiu-jitsu belt from storage",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Not started",
+   "category": "House",
+   "priority": "When family's away",
+   "next_step": "Pick up on the weekday storage trip, for at-home BJJ exercises"
+  },
+  {
+   "task": "Buy high-quality queen bed frame for guest room",
+   "owner": "Anthony",
+   "due_date": "2026-11-27",
+   "status": "Not started",
+   "category": "House",
+   "priority": "Later",
+   "next_step": "Watch Black Friday deals at City Furniture, Ashley, Rooms To Go; durable enough to move with us"
+  }
+ ]
+}
