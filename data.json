@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-14T00:21",
+ "updated": "2026-10-14T18:12",
  "tasks": [
   {
    "task": "Move under-desk stuff to storage",
@@ -675,6 +675,15 @@
    "category": "House",
    "priority": "Later",
    "next_step": "Watch Black Friday deals at City Furniture, Ashley, Rooms To Go; durable enough to move with us"
+  },
+  {
+   "task": "Start a monthly subject-specific magazine (Offprint)",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Not started",
+   "category": "Personal",
+   "priority": "Later",
+   "next_step": "Archive history month by month per subject (e.g. AI/tech); discuss Offprint features and designs with Personal Assistant"
   }
  ]
 }
