@@ -1,13 +1,13 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Quests"><meta name="theme-color" content="#141228">
+<meta name="apple-mobile-web-app-title" content="Quests"><meta name="theme-color" content="#0f1419">
 <link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="manifest" href="manifest.json">
 <title>Quest Board</title>
 <style>
-:root{--bg:#141228;--card:#1f1c3a;--txt:#f2efff;--mut:#9a94c4;--hot:#ff6b6b;--wk:#ffb347;--away:#6bc5ff;--ok:#4ee6a0}
+:root{--bg:#0f1419;--card:#1a222c;--txt:#eef2f6;--mut:#8b98a8;--hot:#ff6b6b;--wk:#ffb347;--away:#5ec8ff;--ok:#3dd68c}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:radial-gradient(circle at 20% -10%,#3a2a6a,var(--bg) 60%);color:var(--txt);font:15px -apple-system,system-ui,sans-serif;padding:env(safe-area-inset-top) 14px 40px;min-height:100vh}
+body{margin:0;background:radial-gradient(circle at 20% -10%,#1c2a38,var(--bg) 55%);color:var(--txt);font:15px -apple-system,system-ui,sans-serif;padding:env(safe-area-inset-top) 14px 40px;min-height:100vh}
 .banner{background:#ffb34722;border:1px solid #ffb34766;color:#ffd79a;font-size:12px;padding:6px 10px;border-radius:10px;margin:12px 0 6px;text-align:center}
 header{display:flex;align-items:center;gap:14px;margin:10px 0 14px}
 h1{font-size:22px;margin:0}.sub{color:var(--mut);font-size:13px}
@@ -26,7 +26,7 @@ h2 .pill{font-size:12px;padding:2px 8px;border-radius:99px;background:#ffffff14;
 .t{font-weight:600}.n{color:var(--mut);font-size:13px;margin-top:2px}.due{color:var(--hot);font-size:12px;font-weight:700}
 .cats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .cat{background:var(--card);border-radius:12px;padding:10px;font-size:13px}
-.bar{height:7px;background:#ffffff14;border-radius:9px;margin-top:6px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#7b6bff,var(--ok));border-radius:9px;transition:width .8s}
+.bar{height:7px;background:#ffffff14;border-radius:9px;margin-top:6px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#3d8bfd,var(--ok));border-radius:9px;transition:width .8s}
 details summary{cursor:pointer;color:var(--mut);margin:6px 0}
 @keyframes pop{from{opacity:0;transform:translateY(10px)}}
 .burst{position:fixed;pointer-events:none;width:8px;height:8px;border-radius:2px;z-index:9}
@@ -34,7 +34,7 @@ details summary{cursor:pointer;color:var(--mut);margin:6px 0}
 .toast.s{transform:translateX(-50%)}
 </style></head><body>
 <div class="banner">Preview: your taps are saved on this phone only. They don't update the Google Sheet yet.</div>
-<header><div class="ring"><svg width="84" height="84"><circle cx="42" cy="42" r="36" stroke="#ffffff14"/><circle id="rg" cx="42" cy="42" r="36" stroke="url(#g)" stroke-dasharray="226" stroke-dashoffset="226"/><defs><linearGradient id="g"><stop offset="0" stop-color="#7b6bff"/><stop offset="1" stop-color="#4ee6a0"/></linearGradient></defs></svg><b id="pct">0%</b></div>
+<header><div class="ring"><svg width="84" height="84"><circle cx="42" cy="42" r="36" stroke="#ffffff14"/><circle id="rg" cx="42" cy="42" r="36" stroke="url(#g)" stroke-dasharray="226" stroke-dashoffset="226"/><defs><linearGradient id="g"><stop offset="0" stop-color="#3d8bfd"/><stop offset="1" stop-color="#3dd68c"/></linearGradient></defs></svg><b id="pct">0%</b></div>
 <div><h1>Quest Board</h1><div class="sub" id="sum"></div><div class="streak" id="streak"></div></div></header>
 <div id="app"></div><div class="toast" id="toast"></div>
 <script>
@@ -55,7 +55,7 @@ h+=`<section><h2>🗺️ The big picture</h2><div class="cats">${Object.entries(
 const rest=data.filter(t=>!P[t.priority]&&!isDone(t));
 h+=`<section><details><summary>Everything else (${rest.length} open)</summary>${rest.map(t=>card(t,'--mut')).join('')}</details></section><div class="sub" style="text-align:center">Sheet snapshot: ${window.upd||''}</div>`;
 document.getElementById('app').innerHTML=h}
-function burst(x,y){const cols=['#ff6b6b','#ffb347','#4ee6a0','#6bc5ff','#b28bff'];for(let i=0;i<28;i++){const e=document.createElement('div');e.className='burst';e.style.background=cols[i%5];e.style.left=x+'px';e.style.top=y+'px';document.body.appendChild(e);const a=Math.random()*6.28,v=60+Math.random()*120;e.animate([{transform:'translate(0,0) rotate(0)',opacity:1},{transform:`translate(${Math.cos(a)*v}px,${Math.sin(a)*v+80}px) rotate(${Math.random()*720}deg)`,opacity:0}],{duration:900,easing:'cubic-bezier(.1,.7,.3,1)'}).onfinish=()=>e.remove()}}
+function burst(x,y){const cols=['#ff6b6b','#ffb347','#3dd68c','#5ec8ff','#3d8bfd'];for(let i=0;i<28;i++){const e=document.createElement('div');e.className='burst';e.style.background=cols[i%5];e.style.left=x+'px';e.style.top=y+'px';document.body.appendChild(e);const a=Math.random()*6.28,v=60+Math.random()*120;e.animate([{transform:'translate(0,0) rotate(0)',opacity:1},{transform:`translate(${Math.cos(a)*v}px,${Math.sin(a)*v+80}px) rotate(${Math.random()*720}deg)`,opacity:0}],{duration:900,easing:'cubic-bezier(.1,.7,.3,1)'}).onfinish=()=>e.remove()}}
 document.addEventListener('click',e=>{const el=e.target.closest('.task');if(!el)return;const t=data.find(x=>x.task==el.dataset.k);const nd=!isDone(t);local[t.task]=nd;localStorage.setItem(KEY,JSON.stringify(local));
 if(nd){const r=el.querySelector('.chk').getBoundingClientRect();burst(r.left+14,r.top+14);navigator.vibrate&&navigator.vibrate(30);const ts=document.getElementById('toast');ts.textContent=cheers[Math.random()*cheers.length|0];ts.classList.add('s');setTimeout(()=>ts.classList.remove('s'),1400);el.classList.add('done');setTimeout(render,550)}else render()});
 fetch('data.json?'+Date.now()).then(r=>r.json()).then(j=>{data=j.tasks;window.upd=j.updated;render()});
