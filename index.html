@@ -53,6 +53,8 @@ details .grid{margin-top:12px}
 .splat{position:fixed;pointer-events:none;background:var(--ink);z-index:9}
 .toast{position:fixed;left:50%;bottom:34px;transform:translate(-50%,140%) rotate(-3deg);background:#fff;border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);font:26px 'Bangers';letter-spacing:1.5px;padding:8px 18px;border-radius:30px 26px 32px 22px;transition:transform .35s cubic-bezier(.3,1.6,.5,1);z-index:10}
 .toast.s{transform:translate(-50%,0) rotate(-3deg)}
+.toast button{font:20px 'Bangers';letter-spacing:1px;margin-left:12px;background:var(--ink);color:#fff;border:2px solid var(--ink);border-radius:16px 12px 18px 10px;padding:3px 12px;cursor:pointer}
+.recent{border:3px dashed var(--ink);border-radius:14px;padding:10px;margin-top:6px}.recent .hint{font-size:14px;margin:0 0 8px;font-style:italic}
 .foot{text-align:center;font:15px 'Permanent Marker';margin-top:36px;color:var(--grey)}
 @media(min-width:700px){body{max-width:720px;margin:auto}.grid{grid-template-columns:1fr 1fr}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -62,7 +64,9 @@ details .grid{margin-top:12px}
 <main id="app"></main><div class="toast" id="toast" role="status"></div>
 <script>
 const SCRIPT_URL='https://script.google.com/macros/s/AKfycbxLeLIB5uOhUuChpooQsOYQ8gHt5lo4G4CECRNIQGdCkns3LPCFkcaKUd0osWog73l1/exec';// set to Apps Script /exec URL
-const KEY='quest-done-v1';let local=JSON.parse(localStorage.getItem(KEY)||'{}');let data=[];
+const KEY='quest-done-v1',RK='quest-recent-v1';const tday=()=>new Date().toLocaleDateString('en-CA');let recent=JSON.parse(localStorage.getItem(RK)||'{}');let undoT;
+function saveRecent(){for(const k in recent)if(recent[k].day!=tday())delete recent[k];localStorage.setItem(RK,JSON.stringify(recent))}
+let local=JSON.parse(localStorage.getItem(KEY)||'{}');let data=[];
 const SEC=[["Today","Today","✸"],["This week","This week","✦"],["When family's away","When family's away","⌂"],["Later","Later","☾"]];
 const I={Organize:'<path d="M4 9h16v11H4z M4 9l3-5h10l3 5 M9 13h6"/>',Vehicles:'<path d="M3 15l2-6h14l2 6v3H3z M7 18v2 M17 18v2"/><circle cx="7.5" cy="15" r="1.3"/><circle cx="16.5" cy="15" r="1.3"/>',"Patio and plants":'<path d="M12 21V11 M12 11c0-4 3-6 7-6 0 4-3 6-7 6z M12 14c0-3-2-5-6-5 0 3 2 5 6 5z M7 21h10"/>',House:'<path d="M3 11l9-7 9 7 M5 10v10h14V10 M10 20v-6h4v6"/>',Personal:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-5 4-7 8-7s7 2 8 7"/>',Errands:'<path d="M4 6h3l2 10h10l2-7H8"/><circle cx="10" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/>',Shopping:'<path d="M5 8h14l-1 13H6z M9 8V6a3 3 0 016 0v2"/>',Travel:'<path d="M2 16l20-8-3 9-6-2-2 5-2-6z"/>',Kids:'<circle cx="12" cy="12" r="8"/><path d="M9 10h.01 M15 10h.01 M8.5 14.5c2 2 5 2 7 0"/>',"Christmas list":'<path d="M12 3l5 7h-3l4 6h-4l3 4H7l3-4H6l4-6H7z M12 20v2"/>',"Condo maintenance requests":'<path d="M14 6a4 4 0 00-5 5l-6 6 3 3 6-6a4 4 0 005-5l-2 2-3-3z"/>',Sell:'<path d="M3 12l9-9h8v8l-9 9z"/><circle cx="16" cy="8" r="1.4"/>',Other:'<path d="M12 3l2.5 6 6.5.5-5 4 1.6 6.5L12 16.5 6.4 20 8 13.5l-5-4 6.5-.5z"/>'};
 const ico=c=>`<div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24">${I[c]||I.Other}</svg></div>`;
@@ -78,7 +82,7 @@ document.getElementById('fill').style.width=(tot?got/tot*100:0)+'%';document.get
 document.getElementById('sum').textContent=`${done.length}/${all.length} quests · ${got} XP`;
 const m=document.getElementById('meter');m.setAttribute('aria-valuenow',tot?Math.round(got/tot*100):0);
 const today=data.filter(t=>t.priority=='Today'&&!isDone(t)).length;document.getElementById('streak').textContent=today?`${today} quest${today>1?'s':''} left today. Go get 'em.`:'Today is clear. Legendary.';
-let h='';for(const[k,lab,sym]of SEC){const ts=data.filter(t=>t.priority==k);if(ts.length)h+=sec(lab,sym,ts)}
+saveRecent();const rd=data.filter(t=>recent[t.task]&&isDone(t)).sort((a,b)=>recent[b.task].at-recent[a.task].at);let h=rd.length?`<section><h2><span class="tag">↶ Whoopsie? Recently done</span><span class="cnt">${rd.length} today</span></h2><div class="divider"></div><div class="recent"><p class="hint">Tap a card to un-stamp it and reopen it on the sheet.</p><div class="grid">${rd.map(card).join('')}</div></div></section>`:'';for(const[k,lab,sym]of SEC){const ts=data.filter(t=>t.priority==k);if(ts.length)h+=sec(lab,sym,ts)}
 const rest=data.filter(t=>!SEC.some(s=>s[0]==t.priority)&&!/sell/i.test(t.status)&&!isDone(t));
 const cats={};all.forEach(t=>{const c=cats[t.category||'Other']??={n:0,d:0};c.n++;if(isDone(t))c.d++});
 h+=`<section><h2><span class="tag">✪ The map</span></h2><div class="divider"></div><div class="cats">${Object.entries(cats).sort((a,b)=>b[1].n-a[1].n).map(([k,v])=>`<div class="cat">${ico(k)}${esc(k)} <span style="float:right">${v.d}/${v.n}</span><div class="mini"><i style="width:${v.d/v.n*100}%"></i></div></div>`).join('')}</div></section>`;
@@ -87,7 +91,8 @@ document.getElementById('app').innerHTML=h}
 function splat(x,y){for(let i=0;i<22;i++){const e=document.createElement('div');e.className='splat';const s=4+Math.random()*12;Object.assign(e.style,{left:x+'px',top:y+'px',width:s+'px',height:s+'px',borderRadius:i%3?'50%':'2px'});document.body.appendChild(e);const a=Math.random()*6.28,v=50+Math.random()*130;
 e.animate([{transform:'translate(-50%,-50%) scale(1)',opacity:1},{transform:`translate(${Math.cos(a)*v}px,${Math.sin(a)*v+60}px) rotate(${Math.random()*540}deg) scale(.4)`,opacity:0}],{duration:800,easing:'cubic-bezier(.1,.7,.3,1)'}).onfinish=()=>e.remove()}}
 function tap(el){const t=data.find(x=>x.task==el.dataset.k);const nd=!isDone(t);if(window.LIVE){const prev=t.status;t.status=nd?'Done':'Open';fetch(SCRIPT_URL+'?action='+(nd?'done':'undo')+'&row='+t.row+'&task='+encodeURIComponent(t.task)).then(r=>r.json()).then(j=>{if(!j.ok)throw j}).catch(()=>{t.status=prev;render();const ts=document.getElementById('toast');ts.textContent='SHEET SAVE FAILED';ts.classList.add('s');setTimeout(()=>ts.classList.remove('s'),1800)})}else{local[t.task]=nd;localStorage.setItem(KEY,JSON.stringify(local))}
-if(nd){const r=el.getBoundingClientRect();splat(r.right-60,r.top+r.height/2);navigator.vibrate&&navigator.vibrate([20,40,30]);const ts=document.getElementById('toast');ts.textContent=cheers[Math.random()*cheers.length|0];ts.classList.add('s');setTimeout(()=>ts.classList.remove('s'),1400);el.classList.add('done','stamping');setTimeout(render,900)}else render()}
+if(nd){recent[t.task]={at:Date.now(),day:tday()}}else delete recent[t.task];saveRecent();
+if(nd){const r=el.getBoundingClientRect();splat(r.right-60,r.top+r.height/2);navigator.vibrate&&navigator.vibrate([20,40,30]);const ts=document.getElementById('toast');ts.innerHTML=esc(cheers[Math.random()*cheers.length|0])+'<button id="undo">↶ Whoopsie / Undo</button>';ts.classList.add('s');clearTimeout(undoT);undoT=setTimeout(()=>ts.classList.remove('s'),8000);document.getElementById('undo').onclick=e=>{e.stopPropagation();clearTimeout(undoT);ts.classList.remove('s');const c=[...document.querySelectorAll('.card')].find(x=>x.dataset.k==t.task);if(c&&isDone(t))tap(c)};el.classList.add('done','stamping');setTimeout(render,900)}else render()}
 document.addEventListener('click',e=>{const el=e.target.closest('.card');if(el)tap(el)});
 document.addEventListener('keydown',e=>{const el=e.target.closest&&e.target.closest('.card');if(el&&(e.key=='Enter'||e.key==' ')){e.preventDefault();tap(el)}});
 const K={task:'task',owner:'owner',due_date:'due_date','due date':'due_date',status:'status',category:'category',priority:'priority',next_step:'next_step','next step':'next_step',row:'row'};
