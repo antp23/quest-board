@@ -57,17 +57,17 @@ details .grid{margin-top:12px}
 @media(min-width:700px){body{max-width:720px;margin:auto}.grid{grid-template-columns:1fr 1fr}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head><body>
-<div class="banner">Preview: your taps are saved on this phone only. They don't update the Google Sheet yet.</div>
 <header><div class="burst-bg"></div><h1><small>Anthony's</small>QUEST BOARD!</h1>
 <div class="meter" role="progressbar" aria-label="Quests done" id="meter"><div class="row"><span class="lvl" id="lvl">LVL 1</span><span id="sum"></span></div><div class="track"><div class="fill" id="fill"></div></div><div class="sub" id="streak"></div></div></header>
 <main id="app"></main><div class="toast" id="toast" role="status"></div>
 <script>
+const SCRIPT_URL='https://script.google.com/macros/s/AKfycbxLeLIB5uOhUuChpooQsOYQ8gHt5lo4G4CECRNIQGdCkns3LPCFkcaKUd0osWog73l1/exec';// set to Apps Script /exec URL
 const KEY='quest-done-v1';let local=JSON.parse(localStorage.getItem(KEY)||'{}');let data=[];
 const SEC=[["Today","Today","✸"],["This week","This week","✦"],["When family's away","When family's away","⌂"],["Later","Later","☾"]];
 const I={Organize:'<path d="M4 9h16v11H4z M4 9l3-5h10l3 5 M9 13h6"/>',Vehicles:'<path d="M3 15l2-6h14l2 6v3H3z M7 18v2 M17 18v2"/><circle cx="7.5" cy="15" r="1.3"/><circle cx="16.5" cy="15" r="1.3"/>',"Patio and plants":'<path d="M12 21V11 M12 11c0-4 3-6 7-6 0 4-3 6-7 6z M12 14c0-3-2-5-6-5 0 3 2 5 6 5z M7 21h10"/>',House:'<path d="M3 11l9-7 9 7 M5 10v10h14V10 M10 20v-6h4v6"/>',Personal:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-5 4-7 8-7s7 2 8 7"/>',Errands:'<path d="M4 6h3l2 10h10l2-7H8"/><circle cx="10" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/>',Shopping:'<path d="M5 8h14l-1 13H6z M9 8V6a3 3 0 016 0v2"/>',Travel:'<path d="M2 16l20-8-3 9-6-2-2 5-2-6z"/>',Kids:'<circle cx="12" cy="12" r="8"/><path d="M9 10h.01 M15 10h.01 M8.5 14.5c2 2 5 2 7 0"/>',"Christmas list":'<path d="M12 3l5 7h-3l4 6h-4l3 4H7l3-4H6l4-6H7z M12 20v2"/>',"Condo maintenance requests":'<path d="M14 6a4 4 0 00-5 5l-6 6 3 3 6-6a4 4 0 005-5l-2 2-3-3z"/>',Sell:'<path d="M3 12l9-9h8v8l-9 9z"/><circle cx="16" cy="8" r="1.4"/>',Other:'<path d="M12 3l2.5 6 6.5.5-5 4 1.6 6.5L12 16.5 6.4 20 8 13.5l-5-4 6.5-.5z"/>'};
 const ico=c=>`<div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24">${I[c]||I.Other}</svg></div>`;
 const cheers=["KA-POW!","QUEST CLEARED!","OSS!","BOOM! +XP","WHAM! NICE.","LEVEL UP-ISH!"];
-const isDone=t=>local[t.task]!==undefined?local[t.task]:/done/i.test(t.status);
+const isDone=t=>window.LIVE?/done/i.test(t.status):local[t.task]!==undefined?local[t.task]:/done/i.test(t.status);
 const esc=s=>(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const xp=t=>t.priority=='Today'?50:t.priority=='This week'?30:20;
 function card(t){const d=isDone(t);return `<div class="card ${d?'done':''}" role="button" tabindex="0" aria-pressed="${d}" data-k="${esc(t.task)}">${ico(t.category)}<div><div class="t">${esc(t.task)}</div>${t.next_step?`<div class="n">→ ${esc(t.next_step)}</div>`:''}<div class="meta"><span class="chip xp">+${xp(t)} XP</span>${t.category?`<span class="chip">${esc(t.category)}</span>`:''}${t.due_date?`<span class="chip">Due ${t.due_date}</span>`:''}</div></div><div class="stamp">DONE!</div></div>`}
@@ -82,13 +82,15 @@ let h='';for(const[k,lab,sym]of SEC){const ts=data.filter(t=>t.priority==k);if(t
 const rest=data.filter(t=>!SEC.some(s=>s[0]==t.priority)&&!/sell/i.test(t.status)&&!isDone(t));
 const cats={};all.forEach(t=>{const c=cats[t.category||'Other']??={n:0,d:0};c.n++;if(isDone(t))c.d++});
 h+=`<section><h2><span class="tag">✪ The map</span></h2><div class="divider"></div><div class="cats">${Object.entries(cats).sort((a,b)=>b[1].n-a[1].n).map(([k,v])=>`<div class="cat">${ico(k)}${esc(k)} <span style="float:right">${v.d}/${v.n}</span><div class="mini"><i style="width:${v.d/v.n*100}%"></i></div></div>`).join('')}</div></section>`;
-h+=`<section><details><summary>Side quests (${rest.length} open)</summary><div class="grid">${rest.map(card).join('')}</div></details></section><div class="foot">Sheet snapshot: ${window.upd||''}</div>`;
+h+=`<section><details><summary>Side quests (${rest.length} open)</summary><div class="grid">${rest.map(card).join('')}</div></details></section><div class="foot">${window.LIVE?'Synced with sheet':'Sheet snapshot'}: ${window.upd||''}</div>`;
 document.getElementById('app').innerHTML=h}
 function splat(x,y){for(let i=0;i<22;i++){const e=document.createElement('div');e.className='splat';const s=4+Math.random()*12;Object.assign(e.style,{left:x+'px',top:y+'px',width:s+'px',height:s+'px',borderRadius:i%3?'50%':'2px'});document.body.appendChild(e);const a=Math.random()*6.28,v=50+Math.random()*130;
 e.animate([{transform:'translate(-50%,-50%) scale(1)',opacity:1},{transform:`translate(${Math.cos(a)*v}px,${Math.sin(a)*v+60}px) rotate(${Math.random()*540}deg) scale(.4)`,opacity:0}],{duration:800,easing:'cubic-bezier(.1,.7,.3,1)'}).onfinish=()=>e.remove()}}
-function tap(el){const t=data.find(x=>x.task==el.dataset.k);const nd=!isDone(t);local[t.task]=nd;localStorage.setItem(KEY,JSON.stringify(local));
+function tap(el){const t=data.find(x=>x.task==el.dataset.k);const nd=!isDone(t);if(window.LIVE){const prev=t.status;t.status=nd?'Done':'Open';fetch(SCRIPT_URL+'?action='+(nd?'done':'undo')+'&row='+t.row+'&task='+encodeURIComponent(t.task)).then(r=>r.json()).then(j=>{if(!j.ok)throw j}).catch(()=>{t.status=prev;render();const ts=document.getElementById('toast');ts.textContent='SHEET SAVE FAILED';ts.classList.add('s');setTimeout(()=>ts.classList.remove('s'),1800)})}else{local[t.task]=nd;localStorage.setItem(KEY,JSON.stringify(local))}
 if(nd){const r=el.getBoundingClientRect();splat(r.right-60,r.top+r.height/2);navigator.vibrate&&navigator.vibrate([20,40,30]);const ts=document.getElementById('toast');ts.textContent=cheers[Math.random()*cheers.length|0];ts.classList.add('s');setTimeout(()=>ts.classList.remove('s'),1400);el.classList.add('done','stamping');setTimeout(render,900)}else render()}
 document.addEventListener('click',e=>{const el=e.target.closest('.card');if(el)tap(el)});
 document.addEventListener('keydown',e=>{const el=e.target.closest&&e.target.closest('.card');if(el&&(e.key=='Enter'||e.key==' ')){e.preventDefault();tap(el)}});
-fetch('data.json?'+Date.now()).then(r=>r.json()).then(j=>{data=j.tasks;window.upd=j.updated;render()});
+function snap(){return fetch('data.json?'+Date.now()).then(r=>r.json()).then(j=>{window.LIVE=false;data=j.tasks;window.upd=j.updated;render()})}
+(SCRIPT_URL?fetch(SCRIPT_URL+'?t='+Date.now()).then(r=>r.json()).then(j=>{if(!j.tasks)throw 0;window.LIVE=true;data=j.tasks;window.upd=j.updated+' (live)';render()}):Promise.reject()).catch(snap);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&window.LIVE)fetch(SCRIPT_URL+'?t='+Date.now()).then(r=>r.json()).then(j=>{if(j.tasks){data=j.tasks;window.upd=j.updated+' (live)';render()}}).catch(()=>{})});
 </script></body></html>
