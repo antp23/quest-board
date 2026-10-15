@@ -74,9 +74,9 @@ function card(t){const d=isDone(t);return `<div class="card ${d?'done':''}" role
 function sec(lab,sym,ts,open=true){const od=ts.filter(t=>!isDone(t)),dn=ts.filter(isDone);
 return `<section><h2><span class="tag">${sym} ${esc(lab)}</span><span class="cnt">${dn.length}/${ts.length} cleared</span></h2><div class="divider"></div><div class="grid">${od.map(card).join('')}</div>${dn.length?`<details><summary>${dn.length} stamped done</summary><div class="grid">${dn.map(card).join('')}</div></details>`:''}</section>`}
 function render(){const all=data.filter(t=>!/sell/i.test(t.status));const done=all.filter(isDone);const tot=all.reduce((a,t)=>a+xp(t),0),got=done.reduce((a,t)=>a+xp(t),0);
-document.getElementById('fill').style.width=(got/tot*100)+'%';document.getElementById('lvl').textContent='LVL '+(1+Math.floor(got/100));
+document.getElementById('fill').style.width=(tot?got/tot*100:0)+'%';document.getElementById('lvl').textContent='LVL '+(1+Math.floor(got/100));
 document.getElementById('sum').textContent=`${done.length}/${all.length} quests · ${got} XP`;
-const m=document.getElementById('meter');m.setAttribute('aria-valuenow',Math.round(got/tot*100));
+const m=document.getElementById('meter');m.setAttribute('aria-valuenow',tot?Math.round(got/tot*100):0);
 const today=data.filter(t=>t.priority=='Today'&&!isDone(t)).length;document.getElementById('streak').textContent=today?`${today} quest${today>1?'s':''} left today. Go get 'em.`:'Today is clear. Legendary.';
 let h='';for(const[k,lab,sym]of SEC){const ts=data.filter(t=>t.priority==k);if(ts.length)h+=sec(lab,sym,ts)}
 const rest=data.filter(t=>!SEC.some(s=>s[0]==t.priority)&&!/sell/i.test(t.status)&&!isDone(t));
@@ -90,7 +90,13 @@ function tap(el){const t=data.find(x=>x.task==el.dataset.k);const nd=!isDone(t);
 if(nd){const r=el.getBoundingClientRect();splat(r.right-60,r.top+r.height/2);navigator.vibrate&&navigator.vibrate([20,40,30]);const ts=document.getElementById('toast');ts.textContent=cheers[Math.random()*cheers.length|0];ts.classList.add('s');setTimeout(()=>ts.classList.remove('s'),1400);el.classList.add('done','stamping');setTimeout(render,900)}else render()}
 document.addEventListener('click',e=>{const el=e.target.closest('.card');if(el)tap(el)});
 document.addEventListener('keydown',e=>{const el=e.target.closest&&e.target.closest('.card');if(el&&(e.key=='Enter'||e.key==' ')){e.preventDefault();tap(el)}});
-function snap(){return fetch('data.json?'+Date.now()).then(r=>r.json()).then(j=>{window.LIVE=false;data=j.tasks;window.upd=j.updated;render()})}
-(SCRIPT_URL?fetch(SCRIPT_URL+'?t='+Date.now()).then(r=>r.json()).then(j=>{if(!j.tasks)throw 0;window.LIVE=true;data=j.tasks;window.upd=j.updated+' (live)';render()}):Promise.reject()).catch(snap);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden&&window.LIVE)fetch(SCRIPT_URL+'?t='+Date.now()).then(r=>r.json()).then(j=>{if(j.tasks){data=j.tasks;window.upd=j.updated+' (live)';render()}}).catch(()=>{})});
+const K={task:'task',owner:'owner',due_date:'due_date','due date':'due_date',status:'status',category:'category',priority:'priority',next_step:'next_step','next step':'next_step',row:'row'};
+function norm(arr){return (arr||[]).map(r=>{const o={};for(const k in r){const m=K[k.toLowerCase().replace(/_/g,' ')]||K[k.toLowerCase()];if(m)o[m]=r[k]==null?'':String(r[k])}o.row=r.row;['task','owner','due_date','status','category','priority','next_step'].forEach(k=>o[k]??='');return o}).filter(t=>t.task)}
+function setSync(m){const f=document.querySelector('.foot');if(f&&m)f.textContent=m}
+let gotLive=false;
+fetch('data.json?'+Date.now()).then(r=>r.json()).then(j=>{if(gotLive)return;data=norm(j.tasks);window.upd=j.updated;render();if(SCRIPT_URL&&!gotLive)setSync('Syncing with sheet…')}).catch(()=>{});
+function live(){if(!SCRIPT_URL)return Promise.reject();const c=new AbortController(),tm=setTimeout(()=>c.abort(),25000);
+return fetch(SCRIPT_URL+'?t='+Date.now(),{signal:c.signal}).then(r=>r.json()).then(j=>{clearTimeout(tm);if(!j.tasks)throw 0;gotLive=true;window.LIVE=true;data=norm(j.tasks);window.upd=j.updated+' (live)';render()})}
+live().catch(()=>{if(!gotLive){setSync('Offline: showing sheet snapshot '+(window.upd||''))}});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&window.LIVE)live().catch(()=>{})});
 </script></body></html>
