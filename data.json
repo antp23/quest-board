@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-14T18:12",
+ "updated": "2026-10-17T22:58",
  "tasks": [
   {
    "task": "Move under-desk stuff to storage",
@@ -113,7 +113,7 @@
    "task": "Replace the nightstand with the tall shelf left of the bed TV",
    "owner": "Anthony",
    "due_date": "",
-   "status": "Open",
+   "status": "Done",
    "category": "House",
    "priority": "When family's away",
    "next_step": "Swap the nightstand for that shelf"
@@ -122,7 +122,7 @@
    "task": "Put the tall shelf next to the guest room fridge",
    "owner": "Anthony",
    "due_date": "",
-   "status": "Open",
+   "status": "Done",
    "category": "House",
    "priority": "When family's away",
    "next_step": "Place it"
@@ -194,7 +194,7 @@
    "task": "Mount the guest room TV in the master",
    "owner": "Anthony",
    "due_date": "",
-   "status": "Open",
+   "status": "Done",
    "category": "House",
    "priority": "When family's away",
    "next_step": "Move it and mount it"
@@ -266,7 +266,7 @@
    "task": "Evaluate other guest room bed frames",
    "owner": "Anthony",
    "due_date": "",
-   "status": "Open",
+   "status": "Done",
    "category": "House",
    "priority": "When family's away",
    "next_step": "Compare frames and pick one"
@@ -284,7 +284,7 @@
    "task": "Move the couch to the other short wall",
    "owner": "Anthony",
    "due_date": "",
-   "status": "Open",
+   "status": "Done",
    "category": "House",
    "priority": "When family's away",
    "next_step": "Move it"
@@ -320,7 +320,7 @@
    "task": "Finish the dresser install",
    "owner": "Anthony",
    "due_date": "",
-   "status": "Open",
+   "status": "Done",
    "category": "House",
    "priority": "When family's away",
    "next_step": "Finish the install this weekend"
@@ -329,7 +329,7 @@
    "task": "Storage unit errand",
    "owner": "Anthony",
    "due_date": "",
-   "status": "Open",
+   "status": "Done",
    "category": "Errands",
    "priority": "This week",
    "next_step": "Weekday trip (closed weekends)"
@@ -409,8 +409,8 @@
   {
    "task": "Call the Toyota mechanic",
    "owner": "Anthony",
-   "due_date": "2026-10-14",
-   "status": "Open",
+   "due_date": "2026-10-19",
+   "status": "Done",
    "category": "Vehicles",
    "priority": "Today",
    "next_step": "VERY IMPORTANT: call Tue 10/13 to book Tundra service for when Sakshee and Rayna are out of town"
@@ -684,6 +684,69 @@
    "category": "Personal",
    "priority": "Later",
    "next_step": "Archive history month by month per subject (e.g. AI/tech); discuss Offprint features and designs with Personal Assistant"
+  },
+  {
+   "task": "Go to the outlets and check some things out",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Done",
+   "category": "Errands",
+   "priority": "When family's away",
+   "next_step": "Same trip as Whole Foods"
+  },
+  {
+   "task": "Check Whole Foods for powdered goat milk (like in Austin)",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Done",
+   "category": "Errands",
+   "priority": "When family's away",
+   "next_step": "Bundle with outlets trip"
+  },
+  {
+   "task": "Get new bug-zapper light bulb for outdoor patio",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Done",
+   "category": "Patio and plants",
+   "priority": "When family's away",
+   "next_step": "Buy and install"
+  },
+  {
+   "task": "Confirm bonsai sitters for the Arizona trip",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Patio and plants",
+   "priority": "When family's away",
+   "next_step": "Confirm who's watering the bonsai while you're in Arizona"
+  },
+  {
+   "task": "Finalize the patio irrigation system",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Patio and plants",
+   "priority": "When family's away",
+   "next_step": "Finish setting up and testing the irrigation"
+  },
+  {
+   "task": "Find a vintage letter holder for the iPhone landline idea",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Done",
+   "category": "Shopping",
+   "priority": "Later",
+   "next_step": "Inspo: https://x.com/demiurgently/status/2111086617754775718"
+  },
+  {
+   "task": "Buy a cheap mirror for Rayna's room",
+   "owner": "Anthony",
+   "due_date": "",
+   "status": "Open",
+   "category": "Kids",
+   "priority": "",
+   "next_step": "Buy it, then mount it (not facing her bed)"
   }
  ]
 }

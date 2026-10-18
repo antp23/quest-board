@@ -55,49 +55,81 @@ details .grid{margin-top:12px}
 .toast.s{transform:translate(-50%,0) rotate(-3deg)}
 .toast button{font:20px 'Bangers';letter-spacing:1px;margin-left:12px;background:var(--ink);color:#fff;border:2px solid var(--ink);border-radius:16px 12px 18px 10px;padding:3px 12px;cursor:pointer}
 .recent{border:3px dashed var(--ink);border-radius:14px;padding:10px;margin-top:6px}.recent .hint{font-size:14px;margin:0 0 8px;font-style:italic}
+.bar{position:sticky;top:0;z-index:5;margin:0 -16px;padding:calc(env(safe-area-inset-top) + 8px) 16px 8px;background:var(--paper);border-bottom:3px solid var(--ink)}
+.srch{display:flex;gap:8px}.srch input{flex:1;font:17px 'Space Grotesk';padding:10px 12px;border:3px solid var(--ink);border-radius:12px;background:#fff;min-height:46px}
+.tog{font:15px 'Permanent Marker';border:3px solid var(--ink);border-radius:12px;background:#fff;padding:0 10px;min-height:46px;white-space:nowrap}.tog.on{background:var(--ink);color:#fff}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:8px 2px 4px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+.cbtn{flex:none;font:600 15px 'Space Grotesk';border:2.5px solid var(--ink);border-radius:22px;background:#fff;padding:8px 14px;min-height:42px;white-space:nowrap;color:var(--ink)}
+.cbtn b{margin-left:6px;font-family:'Bangers';letter-spacing:1px;font-weight:400}.cbtn.on{background:var(--ink);color:#fff;box-shadow:3px 3px 0 #0005}
+.now{background:#fff;border:3px solid var(--ink);border-radius:14px;box-shadow:5px 5px 0 var(--ink);padding:10px 12px;margin:18px 0 4px}
+.now h3{margin:0 0 6px;font:400 26px 'Bangers';letter-spacing:1.5px}.now a{display:flex;gap:8px;align-items:center;padding:10px 0;border-top:2px dashed var(--lt);color:var(--ink);text-decoration:none;font-weight:600;min-height:44px}
+.now a:first-of-type{border-top:0}.now .chip{flex:none}
+.chip.od{background:var(--ink);color:#fff}.chip.pr{border-style:dashed}
+.empty{font:18px 'Permanent Marker';text-align:center;padding:30px 0}
+h2{scroll-margin-top:150px}.card{scroll-margin-top:160px}
+.card.flash{animation:wob .6s}
 .foot{text-align:center;font:15px 'Permanent Marker';margin-top:36px;color:var(--grey)}
 @media(min-width:700px){body{max-width:720px;margin:auto}.grid{grid-template-columns:1fr 1fr}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head><body>
 <header><div class="burst-bg"></div><h1><small>Anthony's</small>QUEST BOARD!</h1>
 <div class="meter" role="progressbar" aria-label="Quests done" id="meter"><div class="row"><span class="lvl" id="lvl">LVL 1</span><span id="sum"></span></div><div class="track"><div class="fill" id="fill"></div></div><div class="sub" id="streak"></div></div></header>
-<main id="app"></main><div class="toast" id="toast" role="status"></div>
+<div class="bar"><div class="srch"><input id="q" type="search" placeholder="Find any task…" autocomplete="off" aria-label="Search tasks"><button class="tog" id="away" aria-pressed="false">⌂ Family away</button></div><div class="chips" id="chips" role="tablist"></div></div>
+<div id="nowbox"></div><main id="app"></main><div class="toast" id="toast" role="status"></div>
 <script>
 const SCRIPT_URL='https://script.google.com/macros/s/AKfycbxLeLIB5uOhUuChpooQsOYQ8gHt5lo4G4CECRNIQGdCkns3LPCFkcaKUd0osWog73l1/exec';// set to Apps Script /exec URL
 const KEY='quest-done-v1',RK='quest-recent-v1';const tday=()=>new Date().toLocaleDateString('en-CA');let recent=JSON.parse(localStorage.getItem(RK)||'{}');let undoT;
 function saveRecent(){for(const k in recent)if(recent[k].day!=tday())delete recent[k];localStorage.setItem(RK,JSON.stringify(recent))}
 let local=JSON.parse(localStorage.getItem(KEY)||'{}');let data=[];
-const SEC=[["Today","Today","✸"],["This week","This week","✦"],["When family's away","When family's away","⌂"],["Later","Later","☾"]];
+const CATS=["Vehicles","House","Kids","Organize","Patio and plants","Errands","Shopping","Christmas list","Sell","Travel","Condo","Personal"];
+const catOf=t=>/^condo/i.test(t.category)?'Condo':(t.category||'Other');
+const PR={"Today":0,"This week":1,"High":1,"":2,"When family's away":3,"Later":4};const pr=t=>PR[t.priority]??2;
+let F={cat:'All',q:'',away:false};
 const I={Organize:'<path d="M4 9h16v11H4z M4 9l3-5h10l3 5 M9 13h6"/>',Vehicles:'<path d="M3 15l2-6h14l2 6v3H3z M7 18v2 M17 18v2"/><circle cx="7.5" cy="15" r="1.3"/><circle cx="16.5" cy="15" r="1.3"/>',"Patio and plants":'<path d="M12 21V11 M12 11c0-4 3-6 7-6 0 4-3 6-7 6z M12 14c0-3-2-5-6-5 0 3 2 5 6 5z M7 21h10"/>',House:'<path d="M3 11l9-7 9 7 M5 10v10h14V10 M10 20v-6h4v6"/>',Personal:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-5 4-7 8-7s7 2 8 7"/>',Errands:'<path d="M4 6h3l2 10h10l2-7H8"/><circle cx="10" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/>',Shopping:'<path d="M5 8h14l-1 13H6z M9 8V6a3 3 0 016 0v2"/>',Travel:'<path d="M2 16l20-8-3 9-6-2-2 5-2-6z"/>',Kids:'<circle cx="12" cy="12" r="8"/><path d="M9 10h.01 M15 10h.01 M8.5 14.5c2 2 5 2 7 0"/>',"Christmas list":'<path d="M12 3l5 7h-3l4 6h-4l3 4H7l3-4H6l4-6H7z M12 20v2"/>',"Condo maintenance requests":'<path d="M14 6a4 4 0 00-5 5l-6 6 3 3 6-6a4 4 0 005-5l-2 2-3-3z"/>',Sell:'<path d="M3 12l9-9h8v8l-9 9z"/><circle cx="16" cy="8" r="1.4"/>',Other:'<path d="M12 3l2.5 6 6.5.5-5 4 1.6 6.5L12 16.5 6.4 20 8 13.5l-5-4 6.5-.5z"/>'};
 const ico=c=>`<div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24">${I[c]||I.Other}</svg></div>`;
+I.Condo=I['Condo maintenance requests'];
 const cheers=["KA-POW!","QUEST CLEARED!","OSS!","BOOM! +XP","WHAM! NICE.","LEVEL UP-ISH!"];
 const isDone=t=>window.LIVE?/done/i.test(t.status):local[t.task]!==undefined?local[t.task]:/done/i.test(t.status);
 const esc=s=>(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const xp=t=>t.priority=='Today'?50:t.priority=='This week'?30:20;
-function card(t){const d=isDone(t);return `<div class="card ${d?'done':''}" role="button" tabindex="0" aria-pressed="${d}" data-k="${esc(t.task)}">${ico(t.category)}<div><div class="t">${esc(t.task)}</div>${t.next_step?`<div class="n">→ ${esc(t.next_step)}</div>`:''}<div class="meta"><span class="chip xp">+${xp(t)} XP</span>${t.category?`<span class="chip">${esc(t.category)}</span>`:''}${t.due_date?`<span class="chip">Due ${t.due_date}</span>`:''}</div></div><div class="stamp">DONE!</div></div>`}
-function sec(lab,sym,ts,open=true){const od=ts.filter(t=>!isDone(t)),dn=ts.filter(isDone);
-return `<section><h2><span class="tag">${sym} ${esc(lab)}</span><span class="cnt">${dn.length}/${ts.length} cleared</span></h2><div class="divider"></div><div class="grid">${od.map(card).join('')}</div>${dn.length?`<details><summary>${dn.length} stamped done</summary><div class="grid">${dn.map(card).join('')}</div></details>`:''}</section>`}
+const od=t=>t.due_date&&t.due_date<tday()&&!isDone(t);
+function card(t){const d=isDone(t);return `<div class="card ${d?'done':''}" role="button" tabindex="0" aria-pressed="${d}" data-k="${esc(t.task)}">${ico(t.category)}<div><div class="t">${esc(t.task)}</div>${t.next_step?`<div class="n">→ ${esc(t.next_step)}</div>`:''}<div class="meta">${t.priority?`<span class="chip pr">${esc(t.priority)}</span>`:''}${od(t)?`<span class="chip od">Overdue ${t.due_date}</span>`:t.due_date?`<span class="chip">Due ${t.due_date}</span>`:''}${/sell|wait|not started/i.test(t.status)?`<span class="chip">${esc(t.status)}</span>`:''}${F.cat=='All'||F.q?'':''}<span class="chip xp">+${xp(t)} XP</span></div></div><div class="stamp">DONE!</div></div>`}
+function match(t){if(F.away&&t.priority!="When family's away")return false;if(F.q){const q=F.q.toLowerCase();return [t.task,t.next_step,t.category,t.priority,t.owner].join(' ').toLowerCase().includes(q)}return true}
 function render(){const all=data.filter(t=>!/sell/i.test(t.status));const done=all.filter(isDone);const tot=all.reduce((a,t)=>a+xp(t),0),got=done.reduce((a,t)=>a+xp(t),0);
 document.getElementById('fill').style.width=(tot?got/tot*100:0)+'%';document.getElementById('lvl').textContent='LVL '+(1+Math.floor(got/100));
 document.getElementById('sum').textContent=`${done.length}/${all.length} quests · ${got} XP`;
 const m=document.getElementById('meter');m.setAttribute('aria-valuenow',tot?Math.round(got/tot*100):0);
-const today=data.filter(t=>t.priority=='Today'&&!isDone(t)).length;document.getElementById('streak').textContent=today?`${today} quest${today>1?'s':''} left today. Go get 'em.`:'Today is clear. Legendary.';
-saveRecent();const rd=data.filter(t=>recent[t.task]&&isDone(t)).sort((a,b)=>recent[b.task].at-recent[a.task].at);let h=rd.length?`<section><h2><span class="tag">↶ Whoopsie? Recently done</span><span class="cnt">${rd.length} today</span></h2><div class="divider"></div><div class="recent"><p class="hint">Tap a card to un-stamp it and reopen it on the sheet.</p><div class="grid">${rd.map(card).join('')}</div></div></section>`:'';for(const[k,lab,sym]of SEC){const ts=data.filter(t=>t.priority==k);if(ts.length)h+=sec(lab,sym,ts)}
-const rest=data.filter(t=>!SEC.some(s=>s[0]==t.priority)&&!/sell/i.test(t.status)&&!isDone(t));
-const cats={};all.forEach(t=>{const c=cats[t.category||'Other']??={n:0,d:0};c.n++;if(isDone(t))c.d++});
-h+=`<section><h2><span class="tag">✪ The map</span></h2><div class="divider"></div><div class="cats">${Object.entries(cats).sort((a,b)=>b[1].n-a[1].n).map(([k,v])=>`<div class="cat">${ico(k)}${esc(k)} <span style="float:right">${v.d}/${v.n}</span><div class="mini"><i style="width:${v.d/v.n*100}%"></i></div></div>`).join('')}</div></section>`;
-h+=`<section><details><summary>Side quests (${rest.length} open)</summary><div class="grid">${rest.map(card).join('')}</div></details></section><div class="foot">${window.LIVE?'Synced with sheet':'Sheet snapshot'}: ${window.upd||''}</div>`;
+const open=data.filter(t=>!isDone(t));
+const nowL=open.filter(t=>t.priority=='Today'||od(t)).sort((a,b)=>od(b)-od(a));
+document.getElementById('streak').textContent=nowL.length?`${nowL.length} quest${nowL.length>1?'s':''} on deck now. Go get 'em.`:'Nothing due now. Legendary.';
+document.getElementById('nowbox').innerHTML=`<div class="now"><h3>✸ Now</h3>${nowL.length?nowL.map(t=>`<a href="#" data-go="${esc(t.task)}"><span>${esc(t.task)}</span><span class="chip ${od(t)?'od':''}" style="margin-left:auto">${od(t)?'Overdue':'Today'}</span></a>`).join(''):'<div class="n">Nothing overdue or set for Today.</div>'}</div>`;
+const vis=open.filter(match);const cnt={};vis.forEach(t=>cnt[catOf(t)]=(cnt[catOf(t)]||0)+1);
+const cl=[...CATS,...Object.keys(cnt).filter(c=>!CATS.includes(c))].filter(c=>cnt[c]);
+if(F.cat!='All'&&!cnt[F.cat]&&!CATS.includes(F.cat))F.cat='All';
+document.getElementById('chips').innerHTML=[['All',vis.length],...CATS.map(c=>[c,cnt[c]||0]),...cl.filter(c=>!CATS.includes(c)).map(c=>[c,cnt[c]])].map(([c,n])=>`<button class="cbtn ${F.cat==c?'on':''}" data-cat="${esc(c)}" role="tab" aria-selected="${F.cat==c}">${esc(c)}<b>${n}</b></button>`).join('');
+saveRecent();const rd=data.filter(t=>recent[t.task]&&isDone(t)).sort((a,b)=>recent[b.task].at-recent[a.task].at);let h=rd.length?`<section><h2><span class="tag">↶ Whoopsie? Recently done</span><span class="cnt">${rd.length} today</span></h2><div class="divider"></div><div class="recent"><p class="hint">Tap a card to un-stamp it and reopen it on the sheet.</p><div class="grid">${rd.map(card).join('')}</div></div></section>`:'';
+const sorted=l=>l.slice().sort((a,b)=>pr(a)-pr(b)||(a.due_date||'9').localeCompare(b.due_date||'9'));
+const show=F.cat=='All'?cl:[F.cat];let n=0;
+for(const c of show){const ts=sorted(vis.filter(t=>catOf(t)==c));if(!ts.length)continue;n+=ts.length;
+h+=`<section><h2 id="c-${esc(c)}">${ico(c=='Condo'?'Condo':c)}<span class="tag">${esc(c)}</span><span class="cnt">${ts.length} open</span></h2><div class="divider"></div><div class="grid">${ts.map(card).join('')}</div></section>`}
+if(!n)h+=`<div class="empty">No open quests match${F.q?` “${esc(F.q)}”`:''}.</div>`;
+h+=`<div class="foot">${n} open shown · ${window.LIVE?'Synced with sheet':'Sheet snapshot'}: ${window.upd||''}</div>`;
 document.getElementById('app').innerHTML=h}
 function splat(x,y){for(let i=0;i<22;i++){const e=document.createElement('div');e.className='splat';const s=4+Math.random()*12;Object.assign(e.style,{left:x+'px',top:y+'px',width:s+'px',height:s+'px',borderRadius:i%3?'50%':'2px'});document.body.appendChild(e);const a=Math.random()*6.28,v=50+Math.random()*130;
 e.animate([{transform:'translate(-50%,-50%) scale(1)',opacity:1},{transform:`translate(${Math.cos(a)*v}px,${Math.sin(a)*v+60}px) rotate(${Math.random()*540}deg) scale(.4)`,opacity:0}],{duration:800,easing:'cubic-bezier(.1,.7,.3,1)'}).onfinish=()=>e.remove()}}
 function tap(el){const t=data.find(x=>x.task==el.dataset.k);const nd=!isDone(t);if(window.LIVE){const prev=t.status;t.status=nd?'Done':'Open';fetch(SCRIPT_URL+'?action='+(nd?'done':'undo')+'&row='+t.row+'&task='+encodeURIComponent(t.task)).then(r=>r.json()).then(j=>{if(!j.ok)throw j}).catch(()=>{t.status=prev;render();const ts=document.getElementById('toast');ts.textContent='SHEET SAVE FAILED';ts.classList.add('s');setTimeout(()=>ts.classList.remove('s'),1800)})}else{local[t.task]=nd;localStorage.setItem(KEY,JSON.stringify(local))}
 if(nd){recent[t.task]={at:Date.now(),day:tday()}}else delete recent[t.task];saveRecent();
 if(nd){const r=el.getBoundingClientRect();splat(r.right-60,r.top+r.height/2);navigator.vibrate&&navigator.vibrate([20,40,30]);const ts=document.getElementById('toast');ts.innerHTML=esc(cheers[Math.random()*cheers.length|0])+'<button id="undo">↶ Whoopsie / Undo</button>';ts.classList.add('s');clearTimeout(undoT);undoT=setTimeout(()=>ts.classList.remove('s'),8000);document.getElementById('undo').onclick=e=>{e.stopPropagation();clearTimeout(undoT);ts.classList.remove('s');const c=[...document.querySelectorAll('.card')].find(x=>x.dataset.k==t.task);if(c&&isDone(t))tap(c)};el.classList.add('done','stamping');setTimeout(render,900)}else render()}
-document.addEventListener('click',e=>{const el=e.target.closest('.card');if(el)tap(el)});
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){e.preventDefault();const k=g.dataset.go;F.q='';document.getElementById('q').value='';const t=data.find(x=>x.task==k);if(t&&F.cat!='All'&&F.cat!=catOf(t))F.cat='All';if(t&&F.away&&!match(t)){F.away=false;syncAway()}render();const c=[...document.querySelectorAll('main .card')].find(x=>x.dataset.k==k);if(c){c.scrollIntoView({behavior:'smooth',block:'center'});c.classList.add('flash');setTimeout(()=>c.classList.remove('flash'),700)}return}
+const cb=e.target.closest('.cbtn');if(cb){F.cat=cb.dataset.cat;render();const b=document.querySelector('.bar');window.scrollTo({top:Math.max(0,document.getElementById('app').offsetTop-b.offsetHeight-8),behavior:'smooth'});return}
+const el=e.target.closest('.card');if(el)tap(el)});
+document.getElementById('q').addEventListener('input',e=>{F.q=e.target.value.trim();render()});
+function syncAway(){const b=document.getElementById('away');b.classList.toggle('on',F.away);b.setAttribute('aria-pressed',F.away)}
+document.getElementById('away').onclick=()=>{F.away=!F.away;syncAway();render()};
 document.addEventListener('keydown',e=>{const el=e.target.closest&&e.target.closest('.card');if(el&&(e.key=='Enter'||e.key==' ')){e.preventDefault();tap(el)}});
 const K={task:'task',owner:'owner',due_date:'due_date','due date':'due_date',status:'status',category:'category',priority:'priority',next_step:'next_step','next step':'next_step',row:'row'};
 function norm(arr){return (arr||[]).map(r=>{const o={};for(const k in r){const m=K[k.toLowerCase().replace(/_/g,' ')]||K[k.toLowerCase()];if(m)o[m]=r[k]==null?'':String(r[k])}o.row=r.row;['task','owner','due_date','status','category','priority','next_step'].forEach(k=>o[k]??='');return o}).filter(t=>t.task)}
-function setSync(m){const f=document.querySelector('.foot');if(f&&m)f.textContent=m}
+function setSync(m){const f=document.querySelector('.foot');if(f&&m)f.textContent+=' · '+m}
 let gotLive=false;
 fetch('data.json?'+Date.now()).then(r=>r.json()).then(j=>{if(gotLive)return;data=norm(j.tasks);window.upd=j.updated;render();if(SCRIPT_URL&&!gotLive)setSync('Syncing with sheet…')}).catch(()=>{});
 function live(){if(!SCRIPT_URL)return Promise.reject();const c=new AbortController(),tm=setTimeout(()=>c.abort(),25000);
